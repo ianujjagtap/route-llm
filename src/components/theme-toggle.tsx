@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/primitives/button";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { Button } from "@/primitives/button";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
