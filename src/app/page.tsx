@@ -5,12 +5,9 @@ export default function Home() {
     <main
       className={"relative flex h-screen flex-col items-center justify-center"}
     >
-      <h1 className={"font-medium text-7xl tracking-tighter"}>
-        Next Essential
-      </h1>
-      <p className={"my-6 text-center text-base"}>
-        An Essential Template to get started with Next.js application with
-        essential.
+      <h1 className="font-bold text-4xl">Welcome to Route LLM</h1>
+      <p className="mt-4 text-lg">
+        An advanced routing solution for large language models (LLMs).
       </p>
       <ThemeToggle />
     </main>
