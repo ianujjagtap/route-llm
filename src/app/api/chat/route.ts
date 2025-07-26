@@ -10,9 +10,7 @@ interface Message {
   role: "user" | "assistant";
   content: string;
 }
-interface RequestType {
-  messages: Message[];
-}
+
 export async function POST(req: Request) {
   const { messages } = await req.json();
   const result = streamText({
