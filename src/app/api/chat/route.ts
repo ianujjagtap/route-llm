@@ -1,6 +1,4 @@
-// import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
-// import { xai } from "@ai-sdk/xai";
 import { smoothStream, streamText } from "ai";
 
 // streaming responses upto 30 seeconds
