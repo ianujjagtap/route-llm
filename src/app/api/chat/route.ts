@@ -18,6 +18,5 @@ export async function POST(req: Request) {
     prompt: messages.map((m: Message) => m.content).join("\n"),
     experimental_transform: smoothStream({ delayInMs: 100 }),
   });
-  console.log(result);
   return result.toDataStreamResponse();
 }
