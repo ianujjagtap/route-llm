@@ -53,7 +53,7 @@ export default function Chat() {
                 `max-w-[100%] rounded-2xl px-4 py-3 ${message.role === "user" && "max-w-[60%]"} `
               )}
             >
-              <div className="mb-1 font-semibold text-xs opacity-60 flex">
+              <div className="mb-1 flex font-semibold text-xs opacity-60">
                 {message.role === "user" ? (
                   <Command className=" h-4 w-4" />
                 ) : (
