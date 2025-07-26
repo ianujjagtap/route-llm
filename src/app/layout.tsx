@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description:
     "Route LLM - An advanced routing solution for large language models (LLMs) that allows you to create complex routing logic with ease.",
   icons: {
-    icon: "favicon.png",
+    icon: "/logo-dark.png",
   },
 };
 
@@ -25,7 +25,7 @@ export default function RootLayout({
       className={cn(
         fonts.GeistSans.variable,
         fonts.GeistMono.variable,
-        "font-geistSans"
+        "font-mono"
       )}
     >
       <body>
