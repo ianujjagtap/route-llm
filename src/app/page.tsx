@@ -1,6 +1,12 @@
 import Chat from "@/components/chat/use-chat";
+import { ThemeToggle } from "@/components/theme-toggle";
 // import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Home() {
-  return <Chat />;
+  return (
+    <>
+      <ThemeToggle />
+      <Chat />
+    </>
+  );
 }
