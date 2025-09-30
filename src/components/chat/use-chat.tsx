@@ -1,8 +1,9 @@
 "use client";
 import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { ChevronUp, Command, StopCircleIcon } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/primitives/button";
 import { Card, CardContent } from "@/primitives/card";
@@ -11,21 +12,24 @@ import { AutoHighlightMessage } from "../highighter";
 import { HoverBorderGradient } from "../ui/border-gradient";
 
 export default function Chat() {
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    stop,
-    status,
-    setInput,
-  } = useChat();
+  const [input, setInput] = React.useState("");
+  const { messages, sendMessage, stop, status } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+    }),
+  });
 
   const shouldSubmitRef = useRef(false); // Track when to submit
 
   const handlePromptClick = (prompt: string) => {
     setInput(prompt); // Set the input value
     shouldSubmitRef.current = true;
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendMessage({ text: input });
+    setInput("");
   };
 
   useEffect(() => {
@@ -55,7 +59,7 @@ export default function Chat() {
             >
               <div className="mb-1 flex font-semibold text-xs opacity-60">
                 {message.role === "user" ? (
-                  <Command className=" h-4 w-4" />
+                  <Command className="h-4 w-4" />
                 ) : (
                   <Image
                     src={"/logo-white.png"}
@@ -84,7 +88,7 @@ export default function Chat() {
 
         {/* Prompt suggestion cards - only show when no messages */}
         {showPromptCards && (
-          <div className="space-y-4 ">
+          <div className="space-y-4">
             <div className="mb-6 text-center">
               <h2 className="mb-2 font-bold text-xl">
                 How can I help you today?
@@ -136,7 +140,7 @@ export default function Chat() {
               className="w-[80vw] flex-1 rounded-md bg-transparent p-2 shadow-xl outline-none backdrop-blur-lg sm:w-[30rem]"
               value={input}
               placeholder="Say something..."
-              onChange={handleInputChange}
+              onChange={(e) => setInput(e.target.value)}
             />
             {status === "streaming" ? (
               <Button
@@ -148,9 +152,8 @@ export default function Chat() {
               </Button>
             ) : (
               <Button
-                id="submit-button"
+                type="submit"
                 variant={"default"}
-                onClick={handleSubmit}
                 className="ml-2 h-8 w-8 cursor-pointer"
               >
                 <ChevronUp className="h-4 w-4" />
