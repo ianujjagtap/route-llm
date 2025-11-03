@@ -94,7 +94,7 @@ export default function Chat() {
                 How can I help you today?
               </h2>
             </div>
-            <div className="grid hidden grid-cols-1 gap-3 sm:grid-cols-2 lg:grid">
+            <div className="hidden grid-cols-1 gap-3 sm:grid-cols-2 lg:grid">
               {PROMPT_SUGGESTIONS.map((suggestion) => {
                 const IconComponent = suggestion.icon;
                 return (
