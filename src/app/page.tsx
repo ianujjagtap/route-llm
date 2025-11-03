@@ -1,7 +1,7 @@
 import Chat from "@/components/chat/use-chat";
-import { ThemeToggle } from "@/components/theme-toggle";
 // import { ThemeToggle } from "@/components/theme-toggle";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 // function urlBase64ToUint8Array(base64String: string) {
 //   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
