@@ -12,7 +12,7 @@ interface Message {
 export async function POST(req: Request) {
   const { messages } = await req.json();
   const result = streamText({
-    model: google("gemini-1.5-flash"),
+    model: google("gemini-2.5-flash"),
     prompt: messages.map((m: Message) => m.content).join("\n"),
     experimental_transform: smoothStream({ delayInMs: 100 }),
   });
