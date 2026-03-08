@@ -1,9 +1,9 @@
 "use client";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { ChevronUp, Command, StopCircleIcon } from "lucide-react";
+import { ChevronUp, Command, Plus, StopCircleIcon } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/primitives/button";
 import { Card, CardContent } from "@/primitives/card";
@@ -13,39 +13,27 @@ import { HoverBorderGradient } from "../ui/border-gradient";
 
 export default function Chat() {
   const [input, setInput] = React.useState("");
-  const { messages, sendMessage, stop, status } = useChat({
+  const { messages, setMessages, sendMessage, stop, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
   });
 
-  const shouldSubmitRef = useRef(false); // Track when to submit
-
   const handlePromptClick = (prompt: string) => {
-    setInput(prompt); // Set the input value
-    shouldSubmitRef.current = true;
+    sendMessage({ text: prompt });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!input.trim()) return;
     sendMessage({ text: input });
     setInput("");
   };
 
-  useEffect(() => {
-    if (shouldSubmitRef.current && input) {
-      const submitButton = document.getElementById("submit-button");
-      if (submitButton) {
-        submitButton.click();
-        shouldSubmitRef.current = false;
-      }
-    }
-  }, [input]);
-
   const showPromptCards = messages.length === 0;
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-xl flex-col justify-end">
+    <div className="mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-end">
       <div className="mb-24 flex flex-col gap-4">
         {messages.map((message) => (
           <div
@@ -85,6 +73,36 @@ export default function Chat() {
             </div>
           </div>
         ))}
+
+        {status === "submitted" && (
+          <div className="flex justify-start">
+            <div className="max-w-[100%] rounded-2xl px-4 py-3">
+              <div className="mb-1 flex font-semibold text-xs opacity-60">
+                <Image
+                  src={"/logo-white.png"}
+                  alt="AI"
+                  width={20}
+                  height={20}
+                  className="rounded-sm"
+                />
+              </div>
+              <div className="flex h-6 items-center gap-1.5 opacity-80">
+                <div
+                  className="h-2 w-2 animate-bounce rounded-full bg-primary/60"
+                  style={{ animationDelay: "0ms" }}
+                />
+                <div
+                  className="h-2 w-2 animate-bounce rounded-full bg-primary/60"
+                  style={{ animationDelay: "150ms" }}
+                />
+                <div
+                  className="h-2 w-2 animate-bounce rounded-full bg-primary/60"
+                  style={{ animationDelay: "300ms" }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Prompt suggestion cards - only show when no messages */}
         {showPromptCards && (
@@ -128,9 +146,25 @@ export default function Chat() {
 
       <form
         onSubmit={handleSubmit}
-        className="-translate-x-1/2 fixed bottom-0 left-1/2 w-full max-w-xl px-4 py-2"
+        className="-translate-x-1/2 fixed bottom-0 left-1/2 w-full max-w-3xl px-4 py-2"
       >
         <div className="flex w-full justify-center gap-2">
+          {messages.length > 0 && (
+            <Button
+              type="button"
+              variant={"outline"}
+              size={"icon"}
+              className="mt-1 h-10 w-10 shrink-0 cursor-pointer rounded-full border-border/50 bg-transparent transition-all duration-200 hover:border-border hover:bg-primary/10 hover:shadow-md"
+              onClick={() => {
+                setMessages([]);
+                stop();
+              }}
+              title="New Chat"
+            >
+              <Plus className="h-[1.2rem] w-[1.2rem]" />
+              <span className="sr-only">New Chat</span>
+            </Button>
+          )}
           <HoverBorderGradient
             className="relative flex flex-1 items-center"
             as={"div"}
